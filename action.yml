@@ -1,0 +1,23 @@
+# action.yml
+name: 'Create Source Sync Job'
+description: 'Create source sync job for a given source.'
+inputs:
+  api-key:
+    description: 'API key to authenticate the request'
+    required: true
+  source-id:
+    description: 'The source id for which the source sync job needs to be created.'
+    required: true
+  type:
+    description: 'The type of source sync job to be created. Either FULL or INCREMENTAL. Default is INCREMENTAL.'
+    required: false
+    default: 'INCREMENTAL'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.api-key }}
+    - ${{ inputs.source-id }}
+    - ${{ inputs.type }}
+
