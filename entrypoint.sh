@@ -9,18 +9,26 @@ TYPE=$3
 GRAPHQL_ENDPOINT="https://api.management.inkeep.com/graphql"
 
 # Your GraphQL mutation
-GRAPHQL_MUTATION='mutation CreateSourceSyncJob($sourceId: String!, $type: SourceSyncJobType!) {
+GRAPHQL_MUTATION='mutation CreateSourceSyncJob($sourceId: ID!, $type: SourceSyncJobType!) {
   createSourceSyncJob(input: {sourceId: $sourceId, type: $type}) {
     success
   }
 }'
 
+# Use jq to create the JSON payload
+JSON_PAYLOAD=$(jq -n \
+                  --arg query "$GRAPHQL_MUTATION" \
+                  --arg sourceId "$SOURCE_ID" \
+                  --arg type "$TYPE" \
+                  '{query: $query, variables: {sourceId: $sourceId, type: $type}}')
+
 # Make the GraphQL request
 RESPONSE=$(curl -X POST \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer ${API_KEY}" \
-  --data "{\"query\":\"${GRAPHQL_MUTATION}\",\"variables\":{\"sourceId\":\"${SOURCE_ID}\",\"type\":\"${TYPE}\"}}" \
+  --data "$JSON_PAYLOAD" \
   $GRAPHQL_ENDPOINT)
+
 
 echo "GraphQL response: $RESPONSE"
 
