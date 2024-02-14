@@ -4,7 +4,7 @@ This action will initiate a source sync for the given source id.
 
 ## Inputs
 
-## `api-ley`
+## `api-key`
 
 **Required** The API key to authenticate the sync job creation request with.
 
