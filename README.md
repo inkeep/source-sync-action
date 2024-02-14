@@ -12,9 +12,9 @@ This action will initiate a source sync for the given source id.
 **Required** The source id for which the sync job will be created.
 
 ## Example usage
-
+```
 uses: actions/source-sync-action@v1
 with:
   api-key: ${{ secrets.InkeepApiKey}}
   source-id: 'test-id'
-  
+```
